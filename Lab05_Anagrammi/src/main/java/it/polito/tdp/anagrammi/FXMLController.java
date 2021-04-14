@@ -2,8 +2,10 @@ package it.polito.tdp.anagrammi;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import it.polito.tdp.anagrammi.model.Model;
 import javafx.event.ActionEvent;
@@ -23,9 +25,18 @@ public class FXMLController
 
 	@FXML void doTrovaAnagrammi(ActionEvent event)
 	{
-		List<String> anagrammi = new ArrayList<>(model.anagrammi(txtInput.getText()));
-		List<String> corrette = new ArrayList<>();
-		List<String> sbagliate = new ArrayList<>();
+		this.reset();
+		//
+		String input = txtInput.getText();
+		if(this.controllaInput(input))
+		{
+			txtAreaCorretti.setText("INSERIRE UNA PAROLA CHE COMPRENDA TRA 3 E 7 CARATTERI");
+			return;
+		}
+		//
+		Set<String> anagrammi = new HashSet<>(model.anagrammi(input));
+		Set<String> corrette = new HashSet<>();
+		Set<String> sbagliate = new HashSet<>();
 		
 		for (String parola : anagrammi)
 		{
@@ -34,19 +45,40 @@ public class FXMLController
 			else sbagliate.add(parola);
 		}
 		
-		txtAreaCorretti.setText("dimensione: " + corrette.size() + " " + corrette.toString());
-		txtAreaSbagliate.setText("dimensione: " + sbagliate.size() + " " + sbagliate.toString());
+		txtAreaCorretti.setText("dimensione: " + corrette.size() + "\n" + corrette.toString());
+		txtAreaSbagliate.setText("dimensione: " + sbagliate.size() + "\n" + sbagliate.toString());
 	}
 	
+	private boolean controllaInput(String input)
+	{
+		return (input.length() < 3 || input.length() > 7);
+	}
+
 	@FXML void doTrovaAnagrammiControllo(ActionEvent event)
 	{
-		List<String> anagrammi = new ArrayList<>(model.anagrammiConControllo(txtInput.getText()));
-		txtAreaCorretti.setText("dimensione: " + anagrammi.size() + " " + anagrammi.toString());
+		this.reset();
+		//
+		String input = txtInput.getText();
+		if(this.controllaInput(input))
+		{
+			txtAreaCorretti.setText("INSERIRE UNA PAROLA CHE COMPRENDA TRA 3 E 7 CARATTERI");
+			return;
+		}
+		//
+		Set<String> anagrammi = new HashSet<>(model.anagrammiConControllo(input));
+		txtAreaCorretti.setText("dimensione: " + anagrammi.size() + "\n" + anagrammi.toString());
 	}
 	
 	@FXML void doReset(ActionEvent event)
 	{
-		
+		reset();
+		txtInput.clear();
+	}
+
+	private void reset()
+	{
+		txtAreaCorretti.clear();
+		txtAreaSbagliate.clear();
 	}
 
 	@FXML void initialize()

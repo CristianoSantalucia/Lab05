@@ -1,7 +1,7 @@
 package it.polito.tdp.anagrammi.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import it.polito.tdp.anagrammi.DB.DizionarioDAO;
 
@@ -10,22 +10,14 @@ public class Model
 	DizionarioDAO dao = new DizionarioDAO();
 	Integer lunghezzaParolaOriginale;
 	
-	public List<String> anagrammi(String parola)
+	public Set<String> anagrammi(String parola)
 	{
 		this.lunghezzaParolaOriginale = parola.length();
-		List<String> risultato = new ArrayList<>();
+		Set<String> risultato = new HashSet<>();
 		this.permuta("", parola, 0, risultato); 
 		return risultato; 
-	}
-	public List<String> anagrammiConControllo(String parola)
-	{
-		this.lunghezzaParolaOriginale = parola.length();
-		List<String> risultato = new ArrayList<>();
-		this.permutaConControllo("", parola, 0, risultato); 
-		return risultato; 
-	}
-
-	private void permuta(String parziale, String lettere, int livello, List<String> risultato)
+	} 
+	private void permuta(String parziale, String lettere, int livello, Set<String> risultato)
 	{
 		if (lettere.length() == 0)
 		{
@@ -43,7 +35,24 @@ public class Model
 			}
 		}
 	}
-	private void permutaConControllo(String parziale, String lettere, int livello, List<String> risultato)
+	// usata dal controller per aggiungere alla lista delle corrette o meno
+	public boolean getParola(String parolaDaConfermare)
+	{
+		return dao.getParola(parolaDaConfermare);
+	}
+	//
+	//
+	//*****************************CONTROLLO DURANTE RICORSIONE*******************************************
+	//
+	//
+	public Set<String> anagrammiConControllo(String parola)
+	{
+		this.lunghezzaParolaOriginale = parola.length();
+		Set<String> risultato = new HashSet<>();
+		this.permutaConControllo("", parola, 0, risultato); 
+		return risultato; 
+	}
+	private void permutaConControllo(String parziale, String lettere, int livello, Set<String> risultato)
 	{
 		if (lettere.length() == 0)
 		{
@@ -63,13 +72,9 @@ public class Model
 			}
 		}
 	}
-	
 	private boolean valida(String lettere)
 	{
+		System.out.println(lettere);
 		return dao.isParolaParziale(lettere, this.lunghezzaParolaOriginale);
-	}
-	public boolean getParola(String parolaDaConfermare)
-	{
-		return dao.getParola(parolaDaConfermare);
 	}
 }
