@@ -30,7 +30,7 @@ public class Model
 			{ 
 				String nuovaParziale = parziale + lettere.charAt(pos);
 				String nuovaLettere = lettere.substring(0, pos) + lettere.substring(pos + 1); 
-				System.out.println(nuovaParziale);
+//				System.out.println(nuovaParziale);
 				
 				permuta(nuovaParziale, nuovaLettere, livello + 1, risultato); 
 			}
@@ -68,14 +68,13 @@ public class Model
 				String nuovaLettere = lettere.substring(0, pos) + lettere.substring(pos + 1); 
 
 				if(valida(nuovaParziale)) //taglia branch inutili
-					permutaConControllo(nuovaParziale, nuovaLettere, livello + 1, risultato); 
-				else return;
+					permutaConControllo(nuovaParziale, nuovaLettere, livello + 1, risultato);  
 			}
 		}
 	}
 	private boolean valida(String lettere)
 	{
-		System.out.println(lettere + " " + dao.isParolaParziale(lettere, this.lunghezzaParolaOriginale));
+//		System.out.println(lettere + " " + dao.isParolaParziale(lettere, this.lunghezzaParolaOriginale));
 		return dao.isParolaParziale(lettere, this.lunghezzaParolaOriginale);
 	}
 }
