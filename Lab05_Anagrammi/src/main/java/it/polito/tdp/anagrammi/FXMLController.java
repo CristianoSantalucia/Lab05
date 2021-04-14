@@ -1,6 +1,7 @@
 package it.polito.tdp.anagrammi;
 
 import java.net.URL;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,6 +35,8 @@ public class FXMLController
 			return;
 		}
 		//
+		long in = System.nanoTime();
+		
 		Set<String> anagrammi = new HashSet<>(model.anagrammi(input));
 		Set<String> corrette = new HashSet<>();
 		Set<String> sbagliate = new HashSet<>();
@@ -44,6 +47,9 @@ public class FXMLController
 				corrette.add(parola);
 			else sbagliate.add(parola);
 		}
+		
+		long fi = System.nanoTime();
+		System.out.println((fi-in)*10e9);
 		
 		txtAreaCorretti.setText("dimensione: " + corrette.size() + "\n" + corrette.toString());
 		txtAreaSbagliate.setText("dimensione: " + sbagliate.size() + "\n" + sbagliate.toString());
@@ -65,7 +71,10 @@ public class FXMLController
 			return;
 		}
 		//
+		long in = System.nanoTime();
 		Set<String> anagrammi = new HashSet<>(model.anagrammiConControllo(input));
+		long fi = System.nanoTime();
+		System.out.println((fi-in)*10e9);
 		txtAreaCorretti.setText("dimensione: " + anagrammi.size() + "\n" + anagrammi.toString());
 	}
 	
